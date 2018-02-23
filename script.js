@@ -2,7 +2,15 @@
 
 $(function(){
   $("#convert").click(function() {
-    var json = JSON.parse($("#target").val());
+    var json = JSON.parse(
+      $("#target").val()
+        /* May be postman */
+        .replace(/\\\\"/g, '"')
+        .replace(/\\\\u[\da-z]{0,3}"/g, '"')
+        /* 8200/_plugin/head/ */
+        .replace(/\\"/g, '"')
+        .replace(/\\u[\da-z]{0,3}"/g, '"')
+    );
 
     // Specially deal with the ES's result
     // console.log(json.hits instanceof Array);
@@ -20,7 +28,7 @@ $(function(){
     }
 
     // Return the result
-    $("#result").html(JSON.stringify(json));
+    $("#result").val(JSON.stringify(json));
   })
 });
 
@@ -60,7 +68,12 @@ function vali_var(v) {
     'has_agent_new',
     'has_mall_presell',
     'has_amazon',
-    'has_surugaya'
+    'has_surugaya',
+    // info
+    'title_jp',
+    'title_cn',
+    'singleline_attrs',
+    'multiline_attrs'
   ], result = false;
   vali.forEach(function(e){
     if ( e == v ){
