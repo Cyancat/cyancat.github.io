@@ -37,9 +37,17 @@ function flatten(json){
     if (typeof json[obj] === 'object') {
       // console.log(obj);
       for (var obj_c in json[obj]) {
+
+        // Filter valid property
         if (vali_var(obj_c)) {
           json[obj + '_' + obj_c] = json[obj][obj_c];
         }
+
+        // Parse unixtime to readable format
+        if (obj_c.indexOf('date') != -1) {
+          json[obj + '_' + obj_c] = moment.unix(json[obj][obj_c]).format('Y-MM-DD') + '(' + json[obj][obj_c] + ')'
+        }
+        
       }
       delete json[obj];
     }
